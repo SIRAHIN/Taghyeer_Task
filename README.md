@@ -83,23 +83,17 @@ lib/
 
 ## Screenshots
 
-<div align="center">
-  <table style="width:100%">
-    <tr>
-      <td align="center"><b>Splash Screen</b></td>
-      <td align="center"><b>Product List</b></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="assets/screenshots/splash.png" width="250"></td>
-      <td align="center"><img src="assets/screenshots/products_list.png" width="250"></td>
-    </tr>
-    <tr>
-      <td align="center"><b>Product Details</b></td>
-      <td align="center"><b>Settings (Dark Mode)</b></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="assets/screenshots/product_details.png" width="250"></td>
-      <td align="center"><img src="assets/screenshots/settings_dark.png" width="250"></td>
-    </tr>
-  </table>
-</div>
+Splash View
+<p align="center"> <img src="https://github.com/user-attachments/assets/7036073f-0d44-4b61-9e43-650ee4eaf2be" width="270"/> </p>
+
+Login View
+<p align="center"> <img src="https://github.com/user-attachments/assets/7f5f3a3f-344e-4d40-92d2-13306b395420" width="270"/> </p>
+
+Products & Product Details
+<p align="center"> <img src="https://github.com/user-attachments/assets/83301c95-b6f6-4224-a6d0-56e1975574cc" width="270"/> <img src="https://github.com/user-attachments/assets/14b0a08b-ddb0-41d3-80ec-54f546d482a1" width="270"/> </p>
+
+Settings (Dark Mode)
+<p align="center"> <img src="https://github.com/user-attachments/assets/dbc122c4-8407-46e3-ba7d-8ef01c2e00d2" width="270"/> </p>
+
+Posts & Post Details (Dark Mode)
+<p align="center"> <img src="https://github.com/user-attachments/assets/f35234e9-4bb1-4f70-950f-a7f3c5411ac6" width="270"/> <img src="https://github.com/user-attachments/assets/04fce762-cbd7-4f8b-abcd-aed3d6ee54b9" width="270"/> </p>
