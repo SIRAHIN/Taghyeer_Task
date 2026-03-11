@@ -22,6 +22,7 @@ import 'data/repository/auth_repository.dart' as _i691;
 import 'presentation/bloc/cubit/auth_cubit.dart' as _i137;
 import 'presentation/bloc/posts_cubit/cubit/posts_cubit.dart' as _i928;
 import 'presentation/bloc/products_cubit/cubit/products_cubit.dart' as _i568;
+import 'presentation/bloc/settings_cubit/cubit/settings_cubit.dart' as _i125;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i174.GetIt $initGetIt(
@@ -38,6 +39,8 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i925.AuthApiService>(() => _i447.IAuthApiService());
   gh.lazySingleton<_i509.LocalDbSource>(() => _i349.ILocalDbSource());
   gh.lazySingleton<_i635.UserApiService>(() => _i377.IUserApiService());
+  gh.factory<_i125.SettingsCubit>(
+      () => _i125.SettingsCubit(gh<_i509.LocalDbSource>()));
   gh.factory<_i568.ProductsCubit>(
       () => _i568.ProductsCubit(gh<_i635.UserApiService>()));
   gh.factory<_i928.PostsCubit>(

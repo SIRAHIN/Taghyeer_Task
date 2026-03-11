@@ -5,6 +5,7 @@ import 'package:taghyeer_task/injection.dart';
 import 'package:taghyeer_task/presentation/bloc/cubit/auth_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/products_cubit/cubit/products_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/posts_cubit/cubit/posts_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/settings_cubit/cubit/settings_cubit.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<PostsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<SettingsCubit>(),
         ),
       ],
       child: ToastificationWrapper(

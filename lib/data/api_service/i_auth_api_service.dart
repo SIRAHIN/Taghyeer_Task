@@ -5,8 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taghyeer_task/core/cache/auth_cache_manager.dart';
 import 'package:taghyeer_task/core/endpoints/api_endpoints.dart';
+import 'package:taghyeer_task/data/local_db_source/local_db_source.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
 import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/injection.dart';
 
 import 'auth_api_service.dart';
 
@@ -42,10 +44,10 @@ class IAuthApiService extends AuthApiService {
   }
 
   // Mapping known server HTML error responses to user-friendly messages \\
-    String _getDefaultMessageForStatusCode(int statusCode) {
+  String _getDefaultMessageForStatusCode(int statusCode) {
     switch (statusCode) {
       case 404:
-        return  'Request failed. Please check your input or try again.';
+        return 'Request failed. Please check your input or try again.';
       case 408:
         return 'Request timeout. Please try again later.';
       case 500:
@@ -119,6 +121,9 @@ class IAuthApiService extends AuthApiService {
       await AuthCacheManager.setToken(token: response.data['accessToken']);
 
       var result = LoginResponse.fromJson(response.data);
+
+      // SAVE USER INFO
+      await getIt<LocalDbSource>().setUserInfo(userInfo: result);
 
       return right(result);
     } on DioException catch (e) {
