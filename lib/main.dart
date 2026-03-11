@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/injection.dart';
 import 'package:taghyeer_task/presentation/app.dart';
 
 Future<void> main() async {
@@ -13,6 +14,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  configureDependencies();
 
   await initHive();
 
@@ -24,4 +26,3 @@ Future<void> initHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(LoginResponseAdapter());
 }
-

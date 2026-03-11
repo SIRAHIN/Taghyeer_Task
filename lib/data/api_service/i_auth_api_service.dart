@@ -12,14 +12,46 @@ import 'auth_api_service.dart';
 
 @LazySingleton(as: AuthApiService)
 class IAuthApiService extends AuthApiService {
+  // Generic method to check for DioException and extract error information \\
   ErrorResponse checkResponseError(DioException err) {
     if (err.type == DioExceptionType.badResponse) {
-      var errorData = err.response?.data;
-      var errorModel = ErrorResponse.fromJson(errorData);
-      return errorModel;
+      final statusCode = err.response?.statusCode;
+      final data = err.response?.data;
+
+      // JSON error response \\
+      if (data is Map<String, dynamic>) {
+        return ErrorResponse.fromJson(data);
+
+        // Server error Response \\
+      } else if (data is String) {
+        return ErrorResponse(
+          status: statusCode,
+          message: _mapServerHtmlError(statusCode, data),
+        );
+      } else {
+        return ErrorResponse();
+      }
     } else {
-      return const ErrorResponse();
+      return ErrorResponse();
     }
+  }
+
+  // Mapping known server HTML error responses to user-friendly messages \\
+  String _mapServerHtmlError(int? status, String body) {
+    if (status == 500) {
+      // Specific known backend issue
+      if (body.contains('STARTTLS')) {
+        return 'Service is temporarily unavailable. Please try again later.';
+      }
+
+      return 'Server error. Please try again later.';
+    }
+
+    if (status == 502 || status == 503) {
+      return 'Server is down. Please try again shortly.';
+    }
+
+    return 'Status Code: $status, Client error - the request cannot be fulfilled';
   }
 
   // Helper method to handle all types of errors including timeouts \\
