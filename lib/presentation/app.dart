@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taghyeer_task/core/router/route_manager.dart';
 import 'package:taghyeer_task/injection.dart';
 import 'package:taghyeer_task/presentation/bloc/cubit/auth_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/products_cubit/cubit/products_cubit.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +16,10 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<AuthCubit>(),
-        ),  
+        ),
+         BlocProvider(
+          create: (context) => getIt<ProductsCubit>(),
+        ),
       ],
       child: ToastificationWrapper(
         child: ScreenUtilInit(

@@ -3,15 +3,13 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:taghyeer_task/core/cache/auth_cache_manager.dart';
 import 'package:taghyeer_task/core/endpoints/api_endpoints.dart';
+import 'package:taghyeer_task/data/api_service/user_api_service.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
-import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/domain/products_response/products_response.dart';
 
-import 'auth_api_service.dart';
-
-@LazySingleton(as: AuthApiService)
-class IAuthApiService extends AuthApiService {
+@LazySingleton(as: UserApiService)
+class IUserApiService extends UserApiService {
   ErrorResponse checkResponseError(DioException err) {
     if (err.type == DioExceptionType.badResponse) {
       final statusCode = err.response?.statusCode ?? 0;
@@ -42,10 +40,10 @@ class IAuthApiService extends AuthApiService {
   }
 
   // Mapping known server HTML error responses to user-friendly messages \\
-    String _getDefaultMessageForStatusCode(int statusCode) {
+  String _getDefaultMessageForStatusCode(int statusCode) {
     switch (statusCode) {
       case 404:
-        return  'Request failed. Please check your input or try again.';
+        return 'Request failed. Please check your input or try again.';
       case 408:
         return 'Request timeout. Please try again later.';
       case 500:
@@ -57,7 +55,7 @@ class IAuthApiService extends AuthApiService {
     }
   }
 
-  // Helper method to handle all types of errors including timeouts \\
+// Helper method to handle all types of errors including timeouts \\
   ErrorResponse handleError(dynamic error) {
     if (error is DioException) {
       switch (error.type) {
@@ -101,27 +99,12 @@ class IAuthApiService extends AuthApiService {
   }
 
   @override
-  @override
-  Future<Either<ErrorResponse, LoginResponse>> login({
-    required String userName,
-    required String password,
-  }) async {
-    try {
-      var loginInfo = FormData.fromMap({
-        'username': userName,
-        'password': password,
-      });
-
-      Response response =
-          await client.post(ApiEndpoints.loginUrl, data: loginInfo);
-
-      // SAVE TOKEN
-      await AuthCacheManager.setToken(token: response.data['accessToken']);
-
-      var result = LoginResponse.fromJson(response.data);
-
+  Future<Either<ErrorResponse, ProductsResponse>> getAllProducts({required int skip}) async {
+    try{
+      Response response = await client.get(ApiEndpoints.getProdcutsUrl(skip: skip.toString()));
+      var result = ProductsResponse.fromJson(response.data);
       return right(result);
-    } on DioException catch (e) {
+    }on DioException catch (e) {
       return left(handleError(e));
     }
   }
