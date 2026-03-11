@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taghyeer_task/core/cache/auth_cache_manager.dart';
+import 'package:taghyeer_task/core/router/route_manager.dart';
+import 'package:taghyeer_task/presentation/bloc/auth_cubit/auth_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/settings_cubit/cubit/settings_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/theme_cubit/cubit/theme_cubit.dart';
 
@@ -101,10 +104,32 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                     ),
                     const SizedBox(height: 12),
                     ListTile(
+                      onTap: () async {
+                        // logout dialog
+                        final shouldLogout = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Confirm Logout'),
+                            content: const Text('Are you sure you want to logout?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: const Text('Logout'),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (shouldLogout != true) return;
+                        await AuthCacheManager.signOut();
+                        RouteManager.router.go(loginViewPath);
+                      },
                       leading:
                           const Icon(Icons.person_outline, color: Colors.red),
-                      title: const Text('Gender'),
-                      subtitle: Text(userInfo.gender ?? 'N/A'),
+                      title: const Text('Logout'),
                       tileColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),

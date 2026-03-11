@@ -80,8 +80,10 @@ class App extends StatelessWidget {
                       listener: (context, internetState) {
                         internetState.when(
                           initial: () {},
-                          connected: () {
-                           
+                          connected: () async {
+                           toastification.dismissAll();
+                           await context.read<ProductsCubit>().getAllProducts();
+                           await context.read<PostsCubit>().getAllPosts();
                           },
                           disconnected: () {
                             toastification.dismissAll();

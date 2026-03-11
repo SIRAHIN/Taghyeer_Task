@@ -23,6 +23,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   // Toggle Password Visibility
   void togglePasswordVisibility() {
-    emit(state.copyWith(isShowPassword: !state.isShowPassword));
+    emit(state.copyWith(isShowPassword: !state.isShowPassword, errorMessage: null, status: AuthStatus.initial));
   }
 }

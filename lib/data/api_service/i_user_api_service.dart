@@ -16,27 +16,21 @@ class IUserApiService extends UserApiService {
       final statusCode = err.response?.statusCode ?? 0;
       var errorData = err.response?.data;
 
-      // Handle empty response body \\
-      if (errorData == null || errorData.toString().isEmpty) {
+      // JSON error response \\
+      if (errorData is Map<String, dynamic>) {
+        return ErrorResponse.fromJson(errorData);
+
+        // Server error Response \\
+      } else if (errorData is String) {
         return ErrorResponse(
           status: statusCode,
           message: _getDefaultMessageForStatusCode(statusCode),
         );
-      }
-
-      // Try parsing JSON response
-      try {
-        var errorModel = ErrorResponse.fromJson(errorData);
-        return errorModel;
-      } catch (e) {
-        // Fallback if JSON parsing fails
-        return ErrorResponse(
-          status: statusCode,
-          message: errorData.toString(),
-        );
+      } else {
+        return ErrorResponse();
       }
     } else {
-      return const ErrorResponse();
+      return ErrorResponse();
     }
   }
 
