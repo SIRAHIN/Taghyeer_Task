@@ -2,6 +2,7 @@
 
 A robust Flutter application that showcases modern Flutter development practices including state management, local database persistence, remote API integration, and pagination.
 
+
 ## Setup & Running the Project (FVM)
 
 This project strictly utilizes [FVM (Flutter Version Management)](https://fvm.app/) to guarantee environment consistency. **Do not run standard `flutter` commands.**
@@ -80,3 +81,25 @@ lib/
 └── main.dart              # Global initializers, Dependency Injection, and Hive setup
 ```
 
+## Screenshots
+
+<div align="center">
+  <table style="width:100%">
+    <tr>
+      <td align="center"><b>Splash Screen</b></td>
+      <td align="center"><b>Product List</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/screenshots/splash.png" width="250"></td>
+      <td align="center"><img src="assets/screenshots/products_list.png" width="250"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Product Details</b></td>
+      <td align="center"><b>Settings (Dark Mode)</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/screenshots/product_details.png" width="250"></td>
+      <td align="center"><img src="assets/screenshots/settings_dark.png" width="250"></td>
+    </tr>
+  </table>
+</div>
