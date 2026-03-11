@@ -2,6 +2,41 @@
 
 A robust Flutter application that showcases modern Flutter development practices including state management, local database persistence, remote API integration, and pagination.
 
+## Setup & Running the Project (FVM)
+
+This project strictly utilizes [FVM (Flutter Version Management)](https://fvm.app/) to guarantee environment consistency. **Do not run standard `flutter` commands.**
+
+**Prerequisites:**
+You must have FVM installed. If you do not have it:
+```bash
+dart pub global activate fvm
+```
+
+**1. Install the specific Flutter SDK version used for this project:**
+```bash
+fvm install 3.27.1
+```
+
+**2. Set it as your active workspace version:**
+```bash
+fvm use 3.27.1
+```
+
+**3. Fetch dependencies:**
+```bash
+fvm flutter pub get
+```
+
+**4. Generate Freezed & Injectable files (if needed):**
+```bash
+fvm dart run build_runner build --delete-conflicting-outputs
+```
+
+**5. Run the app:**
+```bash
+fvm flutter run
+```
+
 ## Features Implemented
 
 - **Product Listing & Pagination**: Displays a grid of products fetched from an API with infinite scrolling/pagination.
@@ -45,37 +80,3 @@ lib/
 └── main.dart              # Global initializers, Dependency Injection, and Hive setup
 ```
 
-## Setup & Running the Project (FVM)
-
-This project strictly utilizes [FVM (Flutter Version Management)](https://fvm.app/) to guarantee environment consistency. **Do not run standard `flutter` commands.**
-
-**Prerequisites:**
-You must have FVM installed. If you do not have it:
-```bash
-dart pub global activate fvm
-```
-
-**1. Install the specific Flutter SDK version used for this project:**
-```bash
-fvm install 3.27.1
-```
-
-**2. Set it as your active workspace version:**
-```bash
-fvm use 3.27.1
-```
-
-**3. Fetch dependencies:**
-```bash
-fvm flutter pub get
-```
-
-**4. Generate Freezed & Injectable files (if needed):**
-```bash
-fvm dart run build_runner build --delete-conflicting-outputs
-```
-
-**5. Run the app:**
-```bash
-fvm flutter run
-```
