@@ -7,6 +7,7 @@ import 'package:taghyeer_task/presentation/bloc/products_cubit/cubit/products_cu
 import 'package:taghyeer_task/presentation/bloc/posts_cubit/cubit/posts_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/settings_cubit/cubit/settings_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/theme_cubit/cubit/theme_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/internet_status_cubit/cubit/internet_status_cubit.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,6 +32,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<ThemeCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<InternetStatusCubit>(),
         ),
       ],
       child: ToastificationWrapper(
@@ -70,6 +74,41 @@ class App extends StatelessWidget {
                   themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
                   debugShowCheckedModeBanner: false,
                   routerConfig: RouteManager.router,
+                  builder: (context, child) {
+                    return BlocListener<InternetStatusCubit,
+                        InternetStatusState>(
+                      listener: (context, internetState) {
+                        internetState.when(
+                          initial: () {},
+                          connected: () {
+                            toastification.dismissAll();
+                            toastification.show(
+                              context: context,
+                              type: ToastificationType.success,
+                              style: ToastificationStyle.flatColored,
+                              title: const Text('Back Online'),
+                              autoCloseDuration: const Duration(seconds: 3),
+                            );
+                          },
+                          disconnected: () {
+                            toastification.dismissAll();
+                            toastification.show(
+                              context: context,
+                              type: ToastificationType.error,
+                              style: ToastificationStyle.flatColored,
+                              title: const Text('No Internet Connection'),
+                              description: const Text(
+                                  'Please check your network settings.'),
+                              autoCloseDuration: null, // stays until connected
+                              closeButtonShowType: CloseButtonShowType.none,
+                              dragToClose: false,
+                            );
+                          },
+                        );
+                      },
+                      child: child!,
+                    );
+                  },
                 );
               },
             );
