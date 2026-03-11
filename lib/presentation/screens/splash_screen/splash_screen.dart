@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
             /// App Name
             const Text(
-              "ShopEase",
+              "Shoppy",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,

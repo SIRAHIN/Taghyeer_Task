@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             /// App Name
             const Text(
-              "ShopEase",
+              "Shoppy",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
