@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taghyeer_task/core/router/route_manager.dart';
 import 'package:taghyeer_task/injection.dart';
-import 'package:taghyeer_task/presentation/bloc/cubit/auth_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/auth_cubit/auth_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/products_cubit/cubit/products_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/posts_cubit/cubit/posts_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/settings_cubit/cubit/settings_cubit.dart';
@@ -81,14 +81,7 @@ class App extends StatelessWidget {
                         internetState.when(
                           initial: () {},
                           connected: () {
-                            toastification.dismissAll();
-                            toastification.show(
-                              context: context,
-                              type: ToastificationType.success,
-                              style: ToastificationStyle.flatColored,
-                              title: const Text('Back Online'),
-                              autoCloseDuration: const Duration(seconds: 3),
-                            );
+                           
                           },
                           disconnected: () {
                             toastification.dismissAll();
@@ -99,7 +92,7 @@ class App extends StatelessWidget {
                               title: const Text('No Internet Connection'),
                               description: const Text(
                                   'Please check your network settings.'),
-                              autoCloseDuration: null, // stays until connected
+                              autoCloseDuration: null,
                               closeButtonShowType: CloseButtonShowType.none,
                               dragToClose: false,
                             );

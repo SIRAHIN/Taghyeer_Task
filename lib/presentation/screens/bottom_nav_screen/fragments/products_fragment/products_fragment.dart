@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:taghyeer_task/core/router/route_manager.dart';
 import 'package:taghyeer_task/presentation/bloc/products_cubit/cubit/products_cubit.dart';
 
 class ProductsFragment extends StatefulWidget {
@@ -39,7 +41,10 @@ class _ProductsFragmentState extends State<ProductsFragment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: const Text("Products", style: TextStyle(color: Colors.white, wordSpacing: 14) ,),
+        title: const Text(
+          "Products",
+          style: TextStyle(color: Colors.white, wordSpacing: 14),
+        ),
         centerTitle: true,
       ),
       body: BlocBuilder<ProductsCubit, ProductsState>(
@@ -56,7 +61,7 @@ class _ProductsFragmentState extends State<ProductsFragment> {
                 controller: _scrollController,
                 padding: const EdgeInsets.all(10),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, 
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   childAspectRatio: 0.65,
@@ -69,62 +74,67 @@ class _ProductsFragmentState extends State<ProductsFragment> {
 
                   final product = products[index];
 
-                  return Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Product Image
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
-                            ),
-                            child: Image.network(
-                              product.thumbnail ?? '',
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) =>
-                                  const Icon(Icons.image),
-                            ),
-                          ),
+                  return InkWell(
+                      onTap: () {
+                        context.pushNamed(productDetailsName, extra: product);
+                      },
+                      child: Card(
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-
-                        /// Title
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 6),
-                          child: Text(
-                            product.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /// Product Image
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(12),
+                                ),
+                                child: Image.network(
+                                  product.thumbnail ?? '',
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) =>
+                                      const Icon(Icons.image),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
 
-                        /// Price
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            "\$${product.price}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Colors.green,
+                            /// Title
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 6),
+                              child: Text(
+                                product.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
 
-                        const SizedBox(height: 6),
-                      ],
-                    ),
-                  );
+                            /// Price
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                "\$${product.price}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 6),
+                          ],
+                        ),
+                      ));
                 },
               );
             },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taghyeer_task/core/router/route_manager.dart';
-import 'package:taghyeer_task/presentation/bloc/cubit/auth_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/auth_cubit/auth_cubit.dart';
 import 'package:toastification/toastification.dart';
 
 class LoginScreen extends StatefulWidget {

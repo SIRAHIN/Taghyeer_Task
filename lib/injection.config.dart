@@ -20,7 +20,7 @@ import 'data/internet_service/internet_service.dart' as _i921;
 import 'data/local_db_source/i_local_db_source.dart' as _i349;
 import 'data/local_db_source/local_db_source.dart' as _i509;
 import 'data/repository/auth_repository.dart' as _i691;
-import 'presentation/bloc/cubit/auth_cubit.dart' as _i137;
+import 'presentation/bloc/auth_cubit/auth_cubit.dart' as _i137;
 import 'presentation/bloc/internet_status_cubit/cubit/internet_status_cubit.dart'
     as _i589;
 import 'presentation/bloc/posts_cubit/cubit/posts_cubit.dart' as _i928;
