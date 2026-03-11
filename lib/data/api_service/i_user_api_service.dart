@@ -7,6 +7,7 @@ import 'package:taghyeer_task/core/endpoints/api_endpoints.dart';
 import 'package:taghyeer_task/data/api_service/user_api_service.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
 import 'package:taghyeer_task/domain/products_response/products_response.dart';
+import 'package:taghyeer_task/domain/posts_response/posts_response.dart';
 
 @LazySingleton(as: UserApiService)
 class IUserApiService extends UserApiService {
@@ -99,12 +100,27 @@ class IUserApiService extends UserApiService {
   }
 
   @override
-  Future<Either<ErrorResponse, ProductsResponse>> getAllProducts({required int skip}) async {
-    try{
-      Response response = await client.get(ApiEndpoints.getProdcutsUrl(skip: skip.toString()));
+  Future<Either<ErrorResponse, ProductsResponse>> getAllProducts(
+      {required int skip}) async {
+    try {
+      Response response =
+          await client.get(ApiEndpoints.getProdcutsUrl(skip: skip.toString()));
       var result = ProductsResponse.fromJson(response.data);
       return right(result);
-    }on DioException catch (e) {
+    } on DioException catch (e) {
+      return left(handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<ErrorResponse, PostsResponse>> getAllPosts(
+      {required int skip}) async {
+    try {
+      Response response =
+          await client.get(ApiEndpoints.getPostsUrl(skip: skip.toString()));
+      var result = PostsResponse.fromJson(response.data);
+      return right(result);
+    } on DioException catch (e) {
       return left(handleError(e));
     }
   }

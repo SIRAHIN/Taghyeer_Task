@@ -7,7 +7,7 @@ import 'package:taghyeer_task/core/endpoints/api_endpoints.dart';
 import 'package:taghyeer_task/core/router/route_manager.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
 import 'package:taghyeer_task/domain/products_response/products_response.dart';
-
+import 'package:taghyeer_task/domain/posts_response/posts_response.dart';
 
 abstract class UserApiService {
   UserApiService() {
@@ -21,7 +21,7 @@ abstract class UserApiService {
         if (error.response?.statusCode == 401) {
           // Handle 401 error, redirect to login
           AuthCacheManager.signOut();
-          RouteManager.router.goNamed(loginViewName);  
+          RouteManager.router.goNamed(loginViewName);
         }
         return handler.next(error);
       }),
@@ -38,9 +38,7 @@ abstract class UserApiService {
         logger: debugPrint,
       ),
     ]);
-
   }
-
 
   Dio client = Dio(BaseOptions(
     baseUrl: ApiEndpoints.baseUrl,
@@ -50,7 +48,10 @@ abstract class UserApiService {
     contentType: "application/json",
   ));
 
+  // Get All Products \
+  Future<Either<ErrorResponse, ProductsResponse>> getAllProducts(
+      {required int skip});
 
-  // Get All Products \ 
-  Future<Either<ErrorResponse, ProductsResponse>> getAllProducts({required int skip});
+  // Get All Posts \
+  Future<Either<ErrorResponse, PostsResponse>> getAllPosts({required int skip});
 }
