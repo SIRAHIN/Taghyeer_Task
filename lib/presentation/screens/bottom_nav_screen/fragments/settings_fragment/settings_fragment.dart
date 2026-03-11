@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taghyeer_task/presentation/bloc/settings_cubit/cubit/settings_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/theme_cubit/cubit/theme_cubit.dart';
 
 class SettingsFragment extends StatefulWidget {
   const SettingsFragment({super.key});
@@ -64,6 +65,30 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                       ),
                     ),
                     const SizedBox(height: 32),
+                    BlocBuilder<ThemeCubit, ThemeState>(
+                      builder: (context, themeState) {
+                        final isDark = themeState.maybeWhen(
+                          darkMode: () => true,
+                          orElse: () => false,
+                        );
+
+                        return SwitchListTile(
+                          title: const Text('Dark Mode'),
+                          secondary: Icon(
+                            isDark ? Icons.dark_mode : Icons.light_mode,
+                            color: Colors.red,
+                          ),
+                          value: isDark,
+                          onChanged: (value) {
+                            context.read<ThemeCubit>().toggleTheme();
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Colors.grey.shade200)),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 12),
                     ListTile(
                       leading:
                           const Icon(Icons.email_outlined, color: Colors.red),

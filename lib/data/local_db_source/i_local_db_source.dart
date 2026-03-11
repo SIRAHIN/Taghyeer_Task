@@ -27,4 +27,27 @@ class ILocalDbSource implements LocalDbSource {
       return null;
     }
   }
+
+  @override
+  Future<bool> setAppTheme({required bool isDarkTheme}) async {
+    try {
+      final box = await Hive.openBox<bool>('app-theme');
+      await box.put('isDarkTheme', isDarkTheme);
+      return true;
+    } catch (error) {
+      print("Theme Insert error: $error");
+      return false;
+    }
+  }
+
+  @override
+  Future<bool?> getAppTheme() async {
+    try {
+      final box = await Hive.openBox<bool>('app-theme');
+      return box.get('isDarkTheme');
+    } catch (error) {
+      print("Get Theme error: $error");
+      return null;
+    }
+  }
 }

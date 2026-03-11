@@ -6,6 +6,7 @@ import 'package:taghyeer_task/presentation/bloc/cubit/auth_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/products_cubit/cubit/products_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/posts_cubit/cubit/posts_cubit.dart';
 import 'package:taghyeer_task/presentation/bloc/settings_cubit/cubit/settings_cubit.dart';
+import 'package:taghyeer_task/presentation/bloc/theme_cubit/cubit/theme_cubit.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +29,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<SettingsCubit>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<ThemeCubit>(),
+        ),
       ],
       child: ToastificationWrapper(
         child: ScreenUtilInit(
@@ -35,17 +39,39 @@ class App extends StatelessWidget {
           minTextAdapt: true,
           splitScreenMode: true,
           builder: (context, child) {
-            return MaterialApp.router(
-              theme: ThemeData(
-                useMaterial3: true,
-                colorScheme: ColorScheme.fromSeed(
-                  seedColor: Colors.red,
-                  primary: Colors.red,
-                  secondary: Colors.black,
-                ),
-              ),
-              debugShowCheckedModeBanner: false,
-              routerConfig: RouteManager.router,
+            return BlocBuilder<ThemeCubit, ThemeState>(
+              builder: (context, themeState) {
+                final isDarkMode = themeState.maybeWhen(
+                  darkMode: () => true,
+                  orElse: () => false,
+                );
+
+                return MaterialApp.router(
+                  theme: ThemeData(
+                    useMaterial3: true,
+                    brightness: Brightness.light,
+                    colorScheme: ColorScheme.fromSeed(
+                      seedColor: Colors.red,
+                      primary: Colors.red,
+                      secondary: Colors.black,
+                      brightness: Brightness.light,
+                    ),
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,
+                    brightness: Brightness.dark,
+                    colorScheme: ColorScheme.fromSeed(
+                      seedColor: Colors.red,
+                      primary: Colors.red,
+                      secondary: Colors.white,
+                      brightness: Brightness.dark,
+                    ),
+                  ),
+                  themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                  debugShowCheckedModeBanner: false,
+                  routerConfig: RouteManager.router,
+                );
+              },
             );
           },
         ),
