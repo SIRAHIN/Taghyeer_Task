@@ -38,20 +38,38 @@ class IAuthApiService extends AuthApiService {
 
   // Mapping known server HTML error responses to user-friendly messages \\
   String _mapServerHtmlError(int? status, String body) {
-    if (status == 500) {
-      // Specific known backend issue
+    if (status == null) return 'Unknown server error';
+
+    // Handle server errors
+    if (status >= 500 && status < 600) {
       if (body.contains('STARTTLS')) {
         return 'Service is temporarily unavailable. Please try again later.';
       }
-
       return 'Server error. Please try again later.';
     }
 
-    if (status == 502 || status == 503) {
-      return 'Server is down. Please try again shortly.';
+    // Handle client errors (400-499)
+    if (status >= 400 && status < 500) {
+      // You can detect HTML responses or known messages
+      if (body.contains('<!DOCTYPE html>') || body.contains('<html')) {
+        return 'Request failed. Please check your input or try again.';
+      }
+
+      // Optionally, map specific codes
+      switch (status) {
+        case 401:
+          return 'Unauthorized. Please login again.';
+        case 403:
+          return 'Access denied.';
+        case 404:
+          return 'Requested resource not found.';
+        default:
+          return 'Client error ($status). Please try again.';
+      }
     }
 
-    return 'Status Code: $status, Client error - the request cannot be fulfilled';
+    // Default fallback
+    return 'Unexpected error. Status code: $status';
   }
 
   // Helper method to handle all types of errors including timeouts \\

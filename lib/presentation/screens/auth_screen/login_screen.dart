@@ -105,7 +105,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: passwordController,
                     obscureText: state.isShowPassword,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(state.isShowPassword ? Icons.visibility : Icons.visibility_off),
+                        onPressed: () {
+                          context.read<AuthCubit>().togglePasswordVisibility();
+                        },
+                      ),
                       labelText: "Password",
                       border: OutlineInputBorder(),
                     ),
