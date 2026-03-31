@@ -15,38 +15,44 @@ import 'auth_api_service.dart';
 @LazySingleton(as: AuthApiService)
 class IAuthApiService extends AuthApiService {
   ErrorResponse checkResponseError(DioException err) {
-    if (err.type == DioExceptionType.badResponse) {
-      final statusCode = err.response?.statusCode ?? 0;
-      var errorData = err.response?.data;
+    final statusCode = err.response?.statusCode ?? 0;
+    var errorData = err.response?.data;
 
-      // JSON error response \\
-      if (errorData is Map<String, dynamic>) {
-        return ErrorResponse.fromJson(errorData);
+    // JSON error response \\
+    if (errorData is Map<String, dynamic>) {
+      return ErrorResponse.fromJson(errorData);
 
-        // Server error Response \\
-      } else if (errorData is String) {
-        return ErrorResponse(
-          status: statusCode,
-          message: _getDefaultMessageForStatusCode(statusCode),
-        );
-      } else {
-        return ErrorResponse();
-      }
+      // Server error Response \\
+    } else if (errorData is String) {
+      return ErrorResponse(
+        status: statusCode,
+        message: _getDefaultMessageForStatusCode(statusCode),
+      );
     } else {
-      return ErrorResponse();
+      return ErrorResponse(
+        status: statusCode,
+        message: 'An error occurred. Please try again.',
+      );
     }
   }
 
   // Mapping known server HTML error responses to user-friendly messages \\
   String _getDefaultMessageForStatusCode(int statusCode) {
-    print("Received status code: $statusCode");
     switch (statusCode) {
+      case 400:
+        return 'Invalid request. Please check your input.';
+      case 401:
+        return 'Invalid credentials. Please try again.';
+      case 403:
+        return 'Access denied. Please contact support.';
       case 404:
         return 'Request failed. Please check your input or try again.';
       case 408:
         return 'Request timeout. Please try again later.';
       case 500:
         return 'Server error. Please try again later.';
+      case 502:
+        return 'Bad gateway. Please try again later.';
       case 503:
         return 'Service unavailable. Please try again later.';
       default:
@@ -81,8 +87,21 @@ class IAuthApiService extends AuthApiService {
           );
         case DioExceptionType.badResponse:
           return checkResponseError(error);
+        case DioExceptionType.cancel:
+          return ErrorResponse(
+            message: 'Request was cancelled.',
+            status: 0,
+          );
+        case DioExceptionType.unknown:
+          return ErrorResponse(
+            message: 'An unknown error occurred. Please try again.',
+            status: 0,
+          );
         default:
-          return checkResponseError(error);
+          return ErrorResponse(
+            message: 'An error occurred. Please try again.',
+            status: 0,
+          );
       }
     } else if (error is SocketException) {
       return ErrorResponse(
@@ -91,13 +110,12 @@ class IAuthApiService extends AuthApiService {
       );
     } else {
       return ErrorResponse(
-        message: error.toString(),
+        message: 'An unexpected error occurred. Please try again.',
         status: 0,
       );
     }
   }
 
-  @override
   @override
   Future<Either<ErrorResponse, LoginResponse>> login({
     required String userName,
@@ -121,7 +139,7 @@ class IAuthApiService extends AuthApiService {
       await getIt<LocalDbSource>().setUserInfo(userInfo: result);
 
       return right(result);
-    } on DioException catch (e) {
+    } catch (e) {
       return left(handleError(e));
     }
   }
