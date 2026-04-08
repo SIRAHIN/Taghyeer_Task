@@ -26,6 +26,13 @@ import 'feature/auth/data/datasource/auth_remote_data_source.dart' as _i274;
 import 'feature/auth/data/repository/auth_repository_Impl.dart' as _i495;
 import 'feature/auth/domain/repository/auth_repository.dart' as _i385;
 import 'feature/auth/domain/usecase/loginUseCase.dart' as _i1004;
+import 'feature/settings/data/datasource/local_settings_data_soruce.dart'
+    as _i576;
+import 'feature/settings/data/repository/I_settins_repository_Impl.dart'
+    as _i138;
+import 'feature/settings/domain/repository/settings_repository_cont.dart'
+    as _i171;
+import 'feature/settings/domain/usecase/settings_usecase.dart' as _i290;
 import 'presentation/bloc/auth_cubit/auth_cubit.dart' as _i791;
 import 'presentation/bloc/internet_status_cubit/cubit/internet_status_cubit.dart'
     as _i589;
@@ -48,15 +55,16 @@ _i174.GetIt $initGetIt(
   gh.factory<_i475.AuthCacheManager>(() => _i475.AuthCacheManager());
   gh.lazySingleton<_i45.DioClient>(() => _i45.DioClient());
   gh.lazySingleton<_i921.InternetService>(() => _i921.InternetService());
+  gh.lazySingleton<_i576.LocalSettingsDataSoruce>(() => _i576.ILocalDbSource());
   gh.lazySingleton<_i871.ApiClient>(
       () => _i871.ApiClient(gh<_i45.DioClient>()));
   gh.lazySingleton<_i925.AuthApiService>(() => _i447.IAuthApiService());
   gh.lazySingleton<_i509.LocalDbSource>(() => _i349.ILocalDbSource());
   gh.lazySingleton<_i635.UserApiService>(() => _i377.IUserApiService());
-  gh.factory<_i125.SettingsCubit>(
-      () => _i125.SettingsCubit(gh<_i509.LocalDbSource>()));
   gh.factory<_i840.ThemeCubit>(
       () => _i840.ThemeCubit(gh<_i509.LocalDbSource>()));
+  gh.lazySingleton<_i171.SettingsRepositoryCont>(
+      () => _i138.ISettinsRepositoryImpl(gh<_i576.LocalSettingsDataSoruce>()));
   gh.factory<_i589.InternetStatusCubit>(
       () => _i589.InternetStatusCubit(gh<_i921.InternetService>()));
   gh.factory<_i928.PostsCubit>(
@@ -67,8 +75,12 @@ _i174.GetIt $initGetIt(
       () => _i274.AuthRemoteDataSource(gh<_i871.ApiClient>()));
   gh.lazySingleton<_i691.AuthRepository>(
       () => _i691.IAuthRepository(gh<_i925.AuthApiService>()));
+  gh.factory<_i290.SettingsUsecase>(
+      () => _i290.SettingsUsecase(gh<_i171.SettingsRepositoryCont>()));
   gh.lazySingleton<_i385.AuthRepositoryContract>(
       () => _i495.AuthRepositoryImpl(gh<_i274.AuthRemoteDataSource>()));
+  gh.factory<_i125.SettingsCubit>(
+      () => _i125.SettingsCubit(gh<_i290.SettingsUsecase>()));
   gh.factory<_i1004.Loginusecase>(
       () => _i1004.Loginusecase(gh<_i385.AuthRepositoryContract>()));
   gh.factory<_i791.AuthCubit>(() => _i791.AuthCubit(gh<_i1004.Loginusecase>()));

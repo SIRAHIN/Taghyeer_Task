@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taghyeer_task/presentation/screens/bottom_nav_screen/fragments/posts_fragment/posts_fragment.dart';
 import 'package:taghyeer_task/presentation/screens/bottom_nav_screen/fragments/products_fragment/products_fragment.dart';
-import 'package:taghyeer_task/presentation/screens/bottom_nav_screen/fragments/settings_fragment/settings_fragment.dart';
+import 'package:taghyeer_task/feature/settings/presentation/settings_fragment/settings_fragment.dart';
 
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
