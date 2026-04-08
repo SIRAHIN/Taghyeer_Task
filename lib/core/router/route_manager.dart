@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:taghyeer_task/presentation/screens/auth_screen/login_screen.dart';
+import 'package:taghyeer_task/feature/auth/presentation/auth_screen/login_screen.dart';
 import 'package:taghyeer_task/presentation/screens/bottom_nav_screen/main_bottom_nav_screen.dart';
 import 'package:taghyeer_task/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:taghyeer_task/presentation/screens/product_details_screen/product_details_screen.dart';

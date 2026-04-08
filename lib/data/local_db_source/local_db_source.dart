@@ -1,4 +1,4 @@
-import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/feature/auth/data/model/login_response.dart/login_response.dart';
 
 abstract class LocalDbSource {
   Future<bool> setUserInfo({required LoginResponse userInfo});

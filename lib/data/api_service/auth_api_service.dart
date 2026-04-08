@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:taghyeer_task/core/endpoints/api_endpoints.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
-import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/feature/auth/data/model/login_response.dart/login_response.dart';
 
 abstract class AuthApiService {
   AuthApiService() {

@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taghyeer_task/data/api_service/auth_api_service.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
-import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/feature/auth/data/model/login_response.dart/login_response.dart';
 
 abstract class AuthRepository {
   final AuthApiService authApiService;

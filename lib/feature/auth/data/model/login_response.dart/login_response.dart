@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:taghyeer_task/feature/auth/domain/entity/login.dart';
 
 part 'login_response.freezed.dart';
 part 'login_response.g.dart';
@@ -19,4 +20,18 @@ class LoginResponse with _$LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);
+}
+
+extension LoginResponseMapper on LoginResponse {
+  Login toEntity() {
+    return Login(
+      id: id ?? 0,
+      username: username ?? '',
+      email: email ?? '',
+      firstName: firstName ?? '',
+      lastName: lastName ?? '',
+      gender: gender ?? '',
+      image: image ?? '',
+    );
+  }
 }

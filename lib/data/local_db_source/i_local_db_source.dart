@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:taghyeer_task/data/local_db_source/local_db_source.dart';
-import 'package:taghyeer_task/domain/login_response.dart/login_response.dart';
+import 'package:taghyeer_task/feature/auth/data/model/login_response.dart/login_response.dart';
 
 @LazySingleton(as: LocalDbSource)
 class ILocalDbSource implements LocalDbSource {

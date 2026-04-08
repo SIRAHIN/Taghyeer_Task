@@ -12,6 +12,8 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import 'core/cache/auth_cache_manager.dart' as _i475;
+import 'core/network/api_client.dart' as _i871;
+import 'core/network/dio_client.dart' as _i45;
 import 'data/api_service/auth_api_service.dart' as _i925;
 import 'data/api_service/i_auth_api_service.dart' as _i447;
 import 'data/api_service/i_user_api_service.dart' as _i377;
@@ -20,7 +22,11 @@ import 'data/internet_service/internet_service.dart' as _i921;
 import 'data/local_db_source/i_local_db_source.dart' as _i349;
 import 'data/local_db_source/local_db_source.dart' as _i509;
 import 'data/repository/auth_repository.dart' as _i691;
-import 'presentation/bloc/auth_cubit/auth_cubit.dart' as _i137;
+import 'feature/auth/data/datasource/auth_remote_data_source.dart' as _i274;
+import 'feature/auth/data/repository/auth_repository_Impl.dart' as _i495;
+import 'feature/auth/domain/repository/auth_repository.dart' as _i385;
+import 'feature/auth/domain/usecase/loginUseCase.dart' as _i1004;
+import 'presentation/bloc/auth_cubit/auth_cubit.dart' as _i791;
 import 'presentation/bloc/internet_status_cubit/cubit/internet_status_cubit.dart'
     as _i589;
 import 'presentation/bloc/posts_cubit/cubit/posts_cubit.dart' as _i928;
@@ -40,7 +46,10 @@ _i174.GetIt $initGetIt(
     environmentFilter,
   );
   gh.factory<_i475.AuthCacheManager>(() => _i475.AuthCacheManager());
+  gh.lazySingleton<_i45.DioClient>(() => _i45.DioClient());
   gh.lazySingleton<_i921.InternetService>(() => _i921.InternetService());
+  gh.lazySingleton<_i871.ApiClient>(
+      () => _i871.ApiClient(gh<_i45.DioClient>()));
   gh.lazySingleton<_i925.AuthApiService>(() => _i447.IAuthApiService());
   gh.lazySingleton<_i509.LocalDbSource>(() => _i349.ILocalDbSource());
   gh.lazySingleton<_i635.UserApiService>(() => _i377.IUserApiService());
@@ -54,9 +63,14 @@ _i174.GetIt $initGetIt(
       () => _i928.PostsCubit(gh<_i635.UserApiService>()));
   gh.factory<_i568.ProductsCubit>(
       () => _i568.ProductsCubit(gh<_i635.UserApiService>()));
+  gh.lazySingleton<_i274.AuthRemoteDataSource>(
+      () => _i274.AuthRemoteDataSource(gh<_i871.ApiClient>()));
   gh.lazySingleton<_i691.AuthRepository>(
       () => _i691.IAuthRepository(gh<_i925.AuthApiService>()));
-  gh.factory<_i137.AuthCubit>(
-      () => _i137.AuthCubit(gh<_i691.AuthRepository>()));
+  gh.lazySingleton<_i385.AuthRepositoryContract>(
+      () => _i495.AuthRepositoryImpl(gh<_i274.AuthRemoteDataSource>()));
+  gh.factory<_i1004.Loginusecase>(
+      () => _i1004.Loginusecase(gh<_i385.AuthRepositoryContract>()));
+  gh.factory<_i791.AuthCubit>(() => _i791.AuthCubit(gh<_i1004.Loginusecase>()));
   return getIt;
 }

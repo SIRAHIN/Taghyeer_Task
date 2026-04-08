@@ -1,20 +1,9 @@
-import 'dart:io';
+ import 'dart:io';
 
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
-import 'package:taghyeer_task/core/cache/auth_cache_manager.dart';
-import 'package:taghyeer_task/core/endpoints/api_endpoints.dart';
-import 'package:taghyeer_task/data/local_db_source/local_db_source.dart';
 import 'package:taghyeer_task/domain/error_response/error_response.dart';
-import 'package:taghyeer_task/feature/auth/data/model/login_response.dart/login_response.dart';
-import 'package:taghyeer_task/injection.dart';
 
-import 'auth_api_service.dart';
-
-@LazySingleton(as: AuthApiService)
-class IAuthApiService extends AuthApiService {
-  ErrorResponse checkResponseError(DioException err) {
+ErrorResponse checkResponseError(DioException err) {
     final statusCode = err.response?.statusCode ?? 0;
     var errorData = err.response?.data;
 
@@ -115,32 +104,3 @@ class IAuthApiService extends AuthApiService {
       );
     }
   }
-
-  @override
-  Future<Either<ErrorResponse, LoginResponse>> login({
-    required String userName,
-    required String password,
-  }) async {
-    try {
-      var loginInfo = FormData.fromMap({
-        'username': userName,
-        'password': password,
-      });
-
-      Response response =
-          await client.post(ApiEndpoints.loginUrl, data: loginInfo);
-
-      // SAVE TOKEN
-      await AuthCacheManager.setToken(token: response.data['accessToken']);
-
-      var result = LoginResponse.fromJson(response.data);
-
-      // SAVE USER INFO
-      await getIt<LocalDbSource>().setUserInfo(userInfo: result);
-
-      return right(result);
-    } catch (e) {
-      return left(handleError(e));
-    }
-  }
-}
