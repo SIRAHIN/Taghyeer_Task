@@ -22,6 +22,7 @@ import 'data/internet_service/internet_service.dart' as _i921;
 import 'data/local_db_source/i_local_db_source.dart' as _i349;
 import 'data/local_db_source/local_db_source.dart' as _i509;
 import 'data/repository/auth_repository.dart' as _i691;
+import 'feature/auth/data/datasource/auth_local_data_source.dart' as _i510;
 import 'feature/auth/data/datasource/auth_remote_data_source.dart' as _i274;
 import 'feature/auth/data/repository/auth_repository_Impl.dart' as _i495;
 import 'feature/auth/domain/repository/auth_repository.dart' as _i385;
@@ -55,6 +56,8 @@ _i174.GetIt $initGetIt(
   gh.factory<_i475.AuthCacheManager>(() => _i475.AuthCacheManager());
   gh.lazySingleton<_i45.DioClient>(() => _i45.DioClient());
   gh.lazySingleton<_i921.InternetService>(() => _i921.InternetService());
+  gh.lazySingleton<_i510.AuthLocalDataSource>(
+      () => _i510.IAuthLocalDataSource());
   gh.lazySingleton<_i576.LocalSettingsDataSoruce>(() => _i576.ILocalDbSource());
   gh.lazySingleton<_i871.ApiClient>(
       () => _i871.ApiClient(gh<_i45.DioClient>()));
@@ -73,16 +76,18 @@ _i174.GetIt $initGetIt(
       () => _i568.ProductsCubit(gh<_i635.UserApiService>()));
   gh.lazySingleton<_i274.AuthRemoteDataSource>(
       () => _i274.AuthRemoteDataSource(gh<_i871.ApiClient>()));
+  gh.lazySingleton<_i385.AuthRepositoryContract>(() => _i495.AuthRepositoryImpl(
+        gh<_i274.AuthRemoteDataSource>(),
+        gh<_i510.AuthLocalDataSource>(),
+      ));
   gh.lazySingleton<_i691.AuthRepository>(
       () => _i691.IAuthRepository(gh<_i925.AuthApiService>()));
   gh.factory<_i290.SettingsUsecase>(
       () => _i290.SettingsUsecase(gh<_i171.SettingsRepositoryCont>()));
-  gh.lazySingleton<_i385.AuthRepositoryContract>(
-      () => _i495.AuthRepositoryImpl(gh<_i274.AuthRemoteDataSource>()));
-  gh.factory<_i125.SettingsCubit>(
-      () => _i125.SettingsCubit(gh<_i290.SettingsUsecase>()));
   gh.factory<_i1004.Loginusecase>(
       () => _i1004.Loginusecase(gh<_i385.AuthRepositoryContract>()));
   gh.factory<_i791.AuthCubit>(() => _i791.AuthCubit(gh<_i1004.Loginusecase>()));
+  gh.factory<_i125.SettingsCubit>(
+      () => _i125.SettingsCubit(gh<_i290.SettingsUsecase>()));
   return getIt;
 }

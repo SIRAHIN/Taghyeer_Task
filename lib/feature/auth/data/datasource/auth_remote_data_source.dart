@@ -17,30 +17,26 @@ class AuthRemoteDataSource {
 
   AuthRemoteDataSource(this._apiClient);
 
-Future<Either<ErrorResponse, Login>> login(
-  String email,
-  String password,
-) async {
-   try {
+  Future<Either<ErrorResponse, LoginResponse>> login(
+    String email,
+    String password,
+  ) async {
+    try {
       var loginInfo = FormData.fromMap({
         'username': email,
         'password': password,
       });
 
-      Response response =
-          await _apiClient.post('/auth/login', data: loginInfo);
+      Response response = await _apiClient.post('/auth/login', data: loginInfo);
 
       // SAVE TOKEN
       await AuthCacheManager.setToken(token: response.data['accessToken']);
 
       var result = LoginResponse.fromJson(response.data);
 
-      // SAVE USER INFO
-      await getIt<LocalDbSource>().setUserInfo(userInfo: result);
-
-      return right(result.toEntity());
+      return right(result);
     } catch (e) {
       return left(handleError(e));
     }
-}
+  }
 }
